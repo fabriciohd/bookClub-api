@@ -1,62 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# bookClub API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST para para o aplicativo de clube do livro.
 
-## About Laravel
+Documentação para acesso via API:
+* [**Configurações**](#configs)
+* [**Métodos**](#methods)
+* [**Respostas**](#responses)
+* [**Rotas**](#routes)
+* [**Parâmetros**](#params)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<a id="configs"></a>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Configurações do projeto
+Requisitos mínimos:
+- [PHP ^7.2](https://www.php.net)
+- [Mysql 5.5.5-10.4.17-MariaDB](https://www.mysql.com)
+- [Composer](https://getcomposer.org)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Framework utilizado:
+- [Laravel ^8.37](https://laravel.com/docs/8.x)
+<br>
 
-## Learning Laravel
+Primeiramente, ao abrir o projeto, lembre-se de instalar as dependências:
+```
+composer install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Após instalar as dependências, copie o arquivo `.env.example` e renomeie para `.env`, se preciso, faça as configurações necessárias e crie o banco de dados local em sua máquina (nome do banco que está no .env.example: `bookclub_api`).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Rode as migrations para criar as tabelas necessárias:
+```
+php artisan migrate
+```
 
-## Laravel Sponsors
+<a id="methods"></a>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Métodos
+Todas as requisições seguem o seguinte padrão:
+| Método | Descrição |
+|---|---|
+| `GET` | Retorna informações de um ou mais registros. |
+| `POST` | Cria um novo registro. |
+| `DELETE` | Remove um registro. |
 
-### Premium Partners
+<a id="responses"></a>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+## Respostas
+Prováveis respostas às requisições.
+| Código | Descrição |
+|---|---|
+| `200` | Requisição executada com sucesso.|
+| `401` | Dados de acesso inválidos.|
+| `404` | Registro ou rota pesquisada não encontrada (Not found).|
+| `422` | Erro de validação de campo ou fora do escopo definido para o campo.|
 
-## Contributing
+<a id="routes"></a>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Endpoints
+### Rotas Públicas
+| Método | Endpoint | Parâmetros Requeridos | Parâmetros Opcionais | Resumo |
+|---|---|---|---|---|
+| `POST` | /auth/login | `email` `password` | | Cria o token de altenticação pelo email e senha do usuário. |
+| `POST` | /auth/register | `name` `email` `password` `password_confirm` | | Cadastra um usuário. |
+### Rotas Autenticadas
+| Método | Endpoint | Parâmetros Requeridos | Parâmetros Opcionais | Resumo |
+|---|---|---|---|---|
+| `GET` | /user | | | Retorna as informações do usuário logado. |
+| `POST` | /auth/logout | | | Destrói o token de altenticação do usuário. |
+| `GET` | /titles | | | Retorna informações de todos os títulos disponíveis. |
+| `POST` | /title | [`title`](#title) | | Cadastra um novo título. |
+| `GET` | /title/disableddates | [`title_id`](#title_id) | | Retorna as datas indisponíveis do título. |
+| `DELETE` | '/title/{id} | | | Remove um título do registro (se não houver reservas futuras para esse título). |
+| `POST` | /reservation | [`title_id`](#title_id) [`start_date`](#start_date) [`end_date`](#end_date) | | Cria uma reserva para o título enviado. |
 
-## Code of Conduct
+<a id="params"></a>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Parâmetros
+| Parâmetro | GET | POST | PUT | DELETE |
+|---|---|---|---|---|
+| <a id="title"></a> `title` | | Título do livro/revista que deseja cadastrar. (`string`) | | |
+| <a id="title_id"></a> `title_id` | ID do título para busca de informações. (`number`) | ID do título para cadastro de informações. (`number`) | | |
+| <a id="start_date"></a> `start_date` | | Primeiro dia da reserva. (`date(YYYY-MM-DD)`) | | |
+| <a id="end_date"></a> `start_date` | | Último dia da reserva (deve ser um período menor que 5 dias de `start_date`). (`date(YYYY-MM-DD)`) | | |

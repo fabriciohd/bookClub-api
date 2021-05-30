@@ -46,5 +46,4 @@ Route::middleware('auth:api')->group(function(){
     
     Route::post('/reservation', [ReservationController::class, 'addReservation']);
     //obrigatorios: title_id, start_date(YYYY-MM-DD), end_date(YYYY-MM-DD)
-
 });
