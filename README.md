@@ -33,6 +33,13 @@ Rode as migrations para criar as tabelas necessárias:
 php artisan migrate
 ```
 
+Rode o projeto localmente para obter a url de acesso:
+```
+php artisan serve
+```
+A url deverá ser complementada com /api para acessar as rotas, ex:
+http://127.0.0.1:8000/api/
+
 <a id="methods"></a>
 
 ## Métodos
