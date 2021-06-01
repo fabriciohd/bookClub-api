@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function(){
     });
 
     Route::get('/titles', [TitleController::class, 'getAll']);
+    //opcionais: mytitles
     Route::post('/title', [TitleController::class, 'addTitle']);
     //OBRIGATORIOS: title
     Route::get('/title/disableddates', [TitleController::class, 'getDisabledDates']);

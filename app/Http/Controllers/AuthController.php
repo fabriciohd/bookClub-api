@@ -79,7 +79,7 @@ class AuthController extends Controller
             ]);
             if (!$token) {
                 $array['error'] = 'Email e/ou Senha incorretos';
-                return $array;
+                return response()->json($array, 403);
             }
 
             $array['token'] = $token;
@@ -88,7 +88,7 @@ class AuthController extends Controller
             $array['user'] = $user;
         } else {
             $array['error'] = $validator->errors()->first();
-            return $array;
+            return response()->json($array, 422);
         }
 
         return $array;

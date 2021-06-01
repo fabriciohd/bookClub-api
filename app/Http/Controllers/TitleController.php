@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Title;
 use App\Models\Reservation;
+use App\Models\User;
 
 use DateTime;
 use DatePeriod;
@@ -15,10 +16,22 @@ use DateInterval;
 
 class TitleController extends Controller
 {
-    public function getAll() {
+    public function getAll(Request $request) {
         $array = ['error' => '', 'list' => ''];
 
-        $array['list'] = Title::all();
+        if ($request->input('mytitles')) {
+            $titles = Title::where('id_owner', Auth::user()->id)->get();
+        } else {
+            $titles = Title::all();
+        }
+
+
+        foreach ($titles as $title) {
+            $owner = User::select('name')->where('id', $title['id_owner'])->first();
+            $title['owner'] = $owner->name;
+        }
+
+        $array['list'] = $titles;
 
         return $array;
     }

@@ -74,10 +74,10 @@ Prováveis respostas às requisições.
 |---|---|---|---|---|
 | `GET` | /user | | | Retorna as informações do usuário logado. |
 | `POST` | /auth/logout | | | Destrói o token de altenticação do usuário. |
-| `GET` | /titles | | | Retorna informações de todos os títulos disponíveis. |
+| `GET` | /titles | | [`mytitles`](#mytitles) | Retorna informações de todos os títulos disponíveis. |
 | `POST` | /title | [`title`](#title) | | Cadastra um novo título. |
 | `GET` | /title/disableddates | [`title_id`](#title_id) | | Retorna as datas indisponíveis do título. |
-| `DELETE` | '/title/{id} | | | Remove um título do registro (se não houver reservas futuras para esse título). |
+| `DELETE` | /title/{id} | | | Remove um título do registro (se não houver reservas futuras para esse título). |
 | `POST` | /reservation | [`title_id`](#title_id) [`start_date`](#start_date) [`end_date`](#end_date) | | Cria uma reserva para o título enviado. |
 
 <a id="params"></a>
@@ -88,4 +88,5 @@ Prováveis respostas às requisições.
 | <a id="title"></a> `title` | | Título do livro/revista que deseja cadastrar. (`string`) | | |
 | <a id="title_id"></a> `title_id` | ID do título para busca de informações. (`number`) | ID do título para cadastro de informações. (`number`) | | |
 | <a id="start_date"></a> `start_date` | | Primeiro dia da reserva. (`date(YYYY-MM-DD)`) | | |
-| <a id="end_date"></a> `start_date` | | Último dia da reserva (deve ser um período menor que 5 dias de `start_date`). (`date(YYYY-MM-DD)`) | | |
+| <a id="end_date"></a> `end_date` | | Último dia da reserva (deve ser um período menor que 5 dias de `start_date`). (`date(YYYY-MM-DD)`) | | |
+| <a id="mytitles"></a> `mytitles` | informa que só é desejado os títulos pertencentes ao usuário que fez a requisição (`boolean`) | | | |
